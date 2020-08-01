@@ -67,6 +67,9 @@ macro_rules! assert_next {
 
 // auto generated from handler_spec_test.cpp
 include!("specexamples.rs.inc");
+#[cfg(feature="strictyaml")]
+include!("spec_test_strictyaml.rs.inc");
+#[cfg(not(feature="strictyaml"))]
 include!("spec_test.rs.inc");
 
 // hand-crafted tests
