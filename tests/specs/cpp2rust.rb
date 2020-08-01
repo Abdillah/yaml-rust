@@ -8,6 +8,19 @@ DISABLED_TESTS = %w(
 	test_ex7_21_single_pair_implicit_entries
 	test_ex7_2_empty_nodes
 	test_ex8_2_block_indentation_header
+
+	# # For Strict YAML
+	# # Uncomment this and run to overwrite spec_test_strictyaml.rs.inc.
+	# test_ex2_11_mapping_between_sequences
+	# test_ex2_5_sequence_of_sequences
+	# test_ex5_4_flow_structure_indicators
+	# test_ex6_1_indentation_spaces
+	# test_ex7_13_flow_sequence
+	# test_ex7_11_plain_implicit_keys
+	# test_ex7_14_flow_sequence_entries
+	# test_ex7_23_flow_content
+	# test_ex7_4_double_quoted_implicit_keys
+	# test_ex7_8_single_quoted_implicit_keys
 )
 
 class Context
