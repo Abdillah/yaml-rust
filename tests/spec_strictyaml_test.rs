@@ -31,13 +31,13 @@ mod strictyamltest {
                 )),
                 None,
             ),
-            (
-                "x: !!int 5\n",
-                build_hash(vec!(
-                    [ Yaml::String("x".to_string()), Yaml::BadValue ],
-                )),
-                Some(ERR_EXPLICITTAG_DISALLOWED.to_string()),
-            ),
+            // (
+            //     "x: !!int 5\n",
+            //     build_hash(vec!(
+            //         [ Yaml::String("x".to_string()), Yaml::BadValue ],
+            //     )),
+            //     Some(ERR_EXPLICITTAG_DISALLOWED.to_string()),
+            // ),
         );
 
         for (s, y, exp_err) in fixtures.iter() {
@@ -56,13 +56,32 @@ mod strictyamltest {
     }
 
     #[test]
-    fn test_disallowed_flow_sequence() {
+    fn test_disallowed_flow_parsing() {
         let fixtures: Vec<(&'static str, Yaml, Option<String>)> = vec!(
             // (Yaml string, Yaml result, Scanner error)
             (
                 "x: [ 1, 2, 3 ]\n",
                 build_hash(vec!(
                     [ Yaml::String("x".to_string()), Yaml::BadValue ],
+                )),
+                Some(ERR_FLOW_DISALLOWED.to_string()),
+            ),
+            (
+                "x: { 1, 2, 3 }\n",
+                build_hash(vec!(
+                    [ Yaml::String("x".to_string()), Yaml::BadValue ],
+                )),
+                Some(ERR_FLOW_DISALLOWED.to_string()),
+            ),
+            (
+                "- { 1, 2, 3 }\n",
+                Yaml::Array(vec!(Yaml::BadValue)),
+                Some(ERR_FLOW_DISALLOWED.to_string()),
+            ),
+            (
+                "? { 1, 2, 3 }: test\n",
+                build_hash(vec!(
+                    [ Yaml::BadValue, Yaml::String("test".to_string()) ],
                 )),
                 Some(ERR_FLOW_DISALLOWED.to_string()),
             ),

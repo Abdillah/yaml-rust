@@ -95,7 +95,7 @@ fn test_ex2_5_sequence_of_sequences() {
     assert_next!(v, TestEvent::OnDocumentEnd);
 }
 
-#[test]
+#[allow(dead_code)]
 fn test_ex2_6_mapping_of_mappings() {
     let mut v = str_to_test_events(EX2_6).into_iter();
     assert_next!(v, TestEvent::OnDocumentStart);
@@ -339,7 +339,7 @@ fn test_ex2_23_various_explicit_tags() {
     assert_next!(v, TestEvent::OnDocumentEnd);
 }
 
-#[test]
+#[allow(dead_code)]
 fn test_ex2_24_global_tags() {
     let mut v = str_to_test_events(EX2_24).into_iter();
     assert_next!(v, TestEvent::OnDocumentStart);
@@ -757,7 +757,7 @@ fn test_ex6_9_separated_comment() {
     assert_next!(v, TestEvent::OnDocumentEnd);
 }
 
-#[test]
+#[allow(dead_code)]
 fn test_ex6_12_separation_spaces_ii() {
     let mut v = str_to_test_events(EX6_12).into_iter();
     assert_next!(v, TestEvent::OnDocumentStart);
@@ -941,7 +941,7 @@ fn test_ex7_2_empty_nodes() {
     assert_next!(v, TestEvent::OnDocumentEnd);
 }
 
-#[test]
+#[allow(dead_code)]
 fn test_ex7_3_completely_empty_nodes() {
     let mut v = str_to_test_events(EX7_3).into_iter();
     assert_next!(v, TestEvent::OnDocumentStart);
@@ -1099,7 +1099,7 @@ fn test_ex7_14_flow_sequence_entries() {
     assert_next!(v, TestEvent::OnDocumentEnd);
 }
 
-#[test]
+#[allow(dead_code)]
 fn test_ex7_15_flow_mappings() {
     let mut v = str_to_test_events(EX7_15).into_iter();
     assert_next!(v, TestEvent::OnDocumentStart);
@@ -1120,7 +1120,7 @@ fn test_ex7_15_flow_mappings() {
     assert_next!(v, TestEvent::OnDocumentEnd);
 }
 
-#[test]
+#[allow(dead_code)]
 fn test_ex7_16_flow_mapping_entries() {
     let mut v = str_to_test_events(EX7_16).into_iter();
     assert_next!(v, TestEvent::OnDocumentStart);
@@ -1152,7 +1152,7 @@ fn test_ex7_17_flow_mapping_separate_values() {
     assert_next!(v, TestEvent::OnDocumentEnd);
 }
 
-#[test]
+#[allow(dead_code)]
 fn test_ex7_18_flow_mapping_adjacent_values() {
     let mut v = str_to_test_events(EX7_18).into_iter();
     assert_next!(v, TestEvent::OnDocumentStart);

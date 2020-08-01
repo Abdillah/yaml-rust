@@ -11,14 +11,21 @@ DISABLED_TESTS = %w(
 
 	# # For Strict YAML
 	# # Uncomment this and run to overwrite spec_test_strictyaml.rs.inc.
-	# test_ex2_11_mapping_between_sequences
 	# test_ex2_5_sequence_of_sequences
+	# test_ex2_6_mapping_of_mappings
+	# test_ex2_11_mapping_between_sequences
+	# test_ex2_24_global_tags
 	# test_ex5_4_flow_structure_indicators
 	# test_ex6_1_indentation_spaces
 	# test_ex7_13_flow_sequence
 	# test_ex7_11_plain_implicit_keys
+	# test_ex6_12_separation_spaces_ii
 	# test_ex7_14_flow_sequence_entries
+	# test_ex7_15_flow_mappings
+	# test_ex7_16_flow_mapping_entries
+	# test_ex7_18_flow_mapping_adjacent_values
 	# test_ex7_23_flow_content
+	# test_ex7_3_completely_empty_nodes
 	# test_ex7_4_double_quoted_implicit_keys
 	# test_ex7_8_single_quoted_implicit_keys
 )

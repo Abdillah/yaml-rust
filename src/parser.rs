@@ -614,10 +614,18 @@ impl<T: Iterator<Item = char>> Parser<T> {
                     Token(mark, _) => {
                         if !first {
                             match *self.peek_token()? {
-                            Token(_, TokenType::FlowEntry) => self.skip(),
-                            Token(mark, _) => return Err(ScanError::new(mark,
-                                "while parsing a flow mapping, did not find expected ',' or '}'"))
-                        }
+                                #[cfg(not(feature="strictyaml"))]
+                                Token(_, TokenType::FlowEntry) => self.skip(),
+                                #[cfg(feature="strictyaml")]
+                                Token(mark, TokenType::FlowEntry) => {
+                                    return Err(ScanError::new(
+                                        mark,
+                                        "flow disallowed"
+                                    ));
+                                },
+                                Token(mark, _) => return Err(ScanError::new(mark,
+                                    "while parsing a flow mapping, did not find expected ',' or '}'"))
+                            }
                         }
 
                         match *self.peek_token()? {
