@@ -26,7 +26,7 @@
 //! ```
 //! use yaml_rust::{YamlLoader, YamlEmitter};
 //!
-//! let docs = YamlLoader::load_from_str("[1, 2, 3]").unwrap();
+//! let docs = YamlLoader::load_from_str("- 1\n- 2\n- 3]").unwrap();
 //! let doc = &docs[0]; // select the first document
 //! assert_eq!(doc[0].as_i64().unwrap(), 1); // access elements by index
 //!
@@ -63,6 +63,7 @@ mod tests {
 
     #[test]
     fn test_api() {
+        #[cfg(not(feature="strictyaml"))]
         let s = "
 # from yaml-cpp example
 - name: Ogre
@@ -87,7 +88,42 @@ mod tests {
     - name: Staff
       damage: 3
 ";
-        let docs = YamlLoader::load_from_str(s).unwrap();
+        #[cfg(feature="strictyaml")]
+        let s = "
+# from yaml-cpp example
+- name: Ogre
+  position:
+    - 0
+    - 5
+    - 0
+  powers:
+    - name: Club
+      damage: 10
+    - name: Fist
+      damage: 8
+- name: Dragon
+  position: 
+    - 1
+    - 0
+    - 10
+  powers:
+    - name: Fire Breath
+      damage: 25
+    - name: Claws
+      damage: 15
+- name: Wizard
+  position: 
+    - 5
+    - -3
+    - 0
+  powers:
+    - name: Acid Rain
+      damage: 50
+    - name: Staff
+      damage: 3
+";
+
+let docs = YamlLoader::load_from_str(s).unwrap();
         let doc = &docs[0];
 
         assert_eq!(doc[0]["name"].as_str().unwrap(), "Ogre");

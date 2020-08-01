@@ -698,8 +698,16 @@ impl<T: Iterator<Item = char>> Parser<T> {
                 self.skip();
                 return Ok((Event::SequenceEnd, mark));
             }
+            #[cfg(not(feature="strictyaml"))]
             Token(_, TokenType::FlowEntry) if !first => {
                 self.skip();
+            }
+            #[cfg(feature="strictyaml")]
+            Token(mark, TokenType::FlowEntry) if !first => {
+                return Err(ScanError::new(
+                    mark,
+                    "flow disallowed"
+                ));
             }
             Token(mark, _) if !first => {
                 return Err(ScanError::new(
@@ -835,6 +843,20 @@ mod test {
 
     #[test]
     fn test_peek_eq_parse() {
+        #[cfg(feature="strictyaml")]
+        let s = "
+a0 bb: val
+a1: &x
+    b1: 4
+    b2: d
+a2: 4
+a3:
+    - 1
+    - 2
+a5: *x
+";
+
+        #[cfg(not(feature="strictyaml"))]
         let s = "
 a0 bb: val
 a1: &x

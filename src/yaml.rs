@@ -371,10 +371,19 @@ mod test {
     use crate::yaml::*;
     #[test]
     fn test_coerce() {
+        #[cfg(not(feature="strictyaml"))]
         let s = "---
 a: 1
 b: 2.2
 c: [1, 2]
+";
+        #[cfg(feature="strictyaml")]
+        let s = "---
+a: 1
+b: 2.2
+c: 
+  - 1
+  - 2
 ";
         let out = YamlLoader::load_from_str(&s).unwrap();
         let doc = &out[0];
@@ -401,7 +410,10 @@ a1:
     b1: 4
     b2: d
 a2: 4 # i'm comment
-a3: [1, 2, 3]
+a3: 
+  - 1
+  - 2
+  - 3
 a4:
     - - a1
       - a2
@@ -429,6 +441,7 @@ a7: 你好
         assert_eq!(out.len(), 3);
     }
 
+    #[cfg(not(feature="strictyaml"))]
     #[test]
     fn test_anchor() {
         let s = "
@@ -442,6 +455,7 @@ a2: *DEFAULT
         assert_eq!(doc["a2"]["b1"].as_i64().unwrap(), 4);
     }
 
+    #[cfg(not(feature="strictyaml"))]
     #[test]
     fn test_bad_anchor() {
         let s = "
@@ -463,6 +477,7 @@ a1: &DEFAULT
         assert_eq!(doc.as_str().unwrap(), "");
     }
 
+    #[cfg(not(feature="strictyaml"))]
     #[test]
     fn test_plain_datatype() {
         let s = "
@@ -525,6 +540,65 @@ a1: &DEFAULT
         assert_eq!(doc[24].as_i64().unwrap(), 12345);
         assert!(doc[25][0].as_bool().unwrap());
         assert!(!doc[25][1].as_bool().unwrap());
+    }
+
+    #[cfg(feature="strictyaml")]
+    #[test]
+    fn test_plain_datatype() {
+        let s = "
+- 'string'
+- \"string\"
+- string
+- 123
+- -321
+- 1.23
+- -1e4
+- ~
+- null
+- true
+- false
+- !!str 0
+- !!int 100
+- !!float 2
+- !!null ~
+- !!bool true
+- !!bool false
+- 0xFF
+# bad values
+- !!int string
+- !!float string
+- !!bool null
+- !!null val
+- 0o77
+- +12345
+";
+        let out = YamlLoader::load_from_str(&s).unwrap();
+        let doc = &out[0];
+
+        assert_eq!(doc[0].as_str().unwrap(), "string");
+        assert_eq!(doc[1].as_str().unwrap(), "string");
+        assert_eq!(doc[2].as_str().unwrap(), "string");
+        assert_eq!(doc[3].as_i64().unwrap(), 123);
+        assert_eq!(doc[4].as_i64().unwrap(), -321);
+        assert_eq!(doc[5].as_f64().unwrap(), 1.23);
+        assert_eq!(doc[6].as_f64().unwrap(), -1e4);
+        assert!(doc[7].is_null());
+        assert!(doc[8].is_null());
+        assert_eq!(doc[9].as_bool().unwrap(), true);
+        assert_eq!(doc[10].as_bool().unwrap(), false);
+        assert_eq!(doc[11].as_str().unwrap(), "0");
+        assert_eq!(doc[12].as_i64().unwrap(), 100);
+        assert_eq!(doc[13].as_f64().unwrap(), 2.0);
+        assert!(doc[14].is_null());
+        assert_eq!(doc[15].as_bool().unwrap(), true);
+        assert_eq!(doc[16].as_bool().unwrap(), false);
+        assert_eq!(doc[17].as_i64().unwrap(), 255);
+        assert!(doc[18].is_badvalue());
+        assert!(doc[19].is_badvalue());
+        assert!(doc[20].is_badvalue());
+        assert!(doc[21].is_badvalue());
+        assert_eq!(doc[22].as_i64().unwrap(), 63);
+        assert_eq!(doc[23].as_i64().unwrap(), 12345);
     }
 
     #[test]

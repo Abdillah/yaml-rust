@@ -339,6 +339,7 @@ mod test {
     use super::*;
     use crate::YamlLoader;
 
+    #[cfg(not(feature="strictyaml"))]
     #[test]
     fn test_emit_simple() {
         let s = "
@@ -372,6 +373,7 @@ a4:
         assert_eq!(doc, doc_new);
     }
 
+    #[cfg(not(feature="strictyaml"))]
     #[test]
     fn test_emit_complex() {
         let s = r#"
@@ -455,6 +457,7 @@ z: string with spaces"#;
         assert_eq!(s, writer, "actual:\n\n{}\n", writer);
     }
 
+    #[cfg(not(feature="strictyaml"))]
     #[test]
     fn emit_quoted_bools() {
         let input = r#"---
